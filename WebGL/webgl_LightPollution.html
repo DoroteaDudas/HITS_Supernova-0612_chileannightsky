@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<!-- @author: Dorotea Dudas	@date 20/02/18 -->
+<html lang="en">
+	<head>
+		<title>Light Polution</title>
+		<meta charset="utf-8"><meta name="author" content="Dorotea Dudas"><meta name="date" content="20-02-2018"> <!--scheme="DD-MM-YYYY"-->
+		<style>
+			body, html {
+				margin: 0px;
+				background-color: #222222;
+				overflow: hidden;
+				
+				/* disable text selection */
+				-webkit-user-select		: none;
+				-moz-user-select		: -moz-none;
+				-ms-user-select			: none;
+				user-select			: none;
+				-webkit-touch-callout		: none;
+				-khtml-user-select		: none;
+				
+				visibility:hidden;
+			}
+			img{
+				-webkit-user-drag		: none;
+			}
+			
+			#slider{
+				bottom	:50px;
+				left	:400px;	
+				width	:58%;
+				z-index	:2;
+				position:absolute; 
+			}
+			#amount{
+				bottom		: 27px;
+				left		: 360px;
+				height		: 50px;
+				width		: 62%;
+				position	: absolute;
+				z-index		: 2;
+				font-size	: 150%;
+				color		: #BDBDBD;
+				background	: rgba(128,128,128,0.0);
+				padding		: 5px;
+				padding-top	: 5px;
+				padding-bottom	: 5px;
+				border-radius	: 0px;
+				border-color	: black;
+				border-style	: solid;
+				border-width	: 0px;
+				text-align	: right;
+			}
+
+			#radioImage{/*small camera view*/
+				right		: 20px;
+				bottom		: 260px;
+				width		: 105px;
+				z-index		: 2;
+				position	: absolute;
+				font-size	: 70%;
+				color		: #BDBDBD;
+				background	: rgba(128,128,128,0.0);
+				padding		: 5px;
+				padding-top	: 4px;
+				padding-bottom	: 4px;
+				border-radius	: 0px;
+				border-color	: black;
+				border-style	: solid;
+				border-width	: 0px;
+				text-align	: center;
+			}
+			#radioImage .ui-button.ui-state-active {
+				background-color: rgba(256,128,256,0.3);
+				color		: #ffffff;
+			}
+			#radioImage .ui-button {
+				background-color: rgba(128,128,128,0.0);
+				border-color	: rgba(128,128,128,0.0);
+				color		: #ffffff;
+			}
+
+			#radioMouse{/*small camera view*/
+				right		: 20px;
+				bottom		: 10px;
+				width		: 105px;
+				z-index		: 2;
+				position	: absolute;
+				font-size	: 70%;
+				color		: #BDBDBD;
+				background	: rgba(128,128,128,0.0);
+				padding		: 5px;
+				padding-top	: 4px;
+				padding-bottom	: 4px;
+				border-radius	: 0px;
+				border-color	: black;
+				border-style	: solid;
+				border-width	: 0px;
+				text-align	: center;
+			}	
+			#radioMouse .ui-button.ui-state-active {
+				background-color: rgba(128,128,256,0.3);
+				color		: #ffffff;
+			}
+			#radioMouse .ui-button {
+				background-color: rgba(128,128,128,0.0);
+				border-color	: rgba(128,128,128,0.0);
+				color		: #ffffff;
+			}
+			
+			#sliderDivide{
+				bottom		:131px;
+				left		:420px;
+				width		:65%;
+				z-index		:2;
+				background	:rgba(0,0,0,0);
+				opacity		:0.9;
+				position	:absolute; 
+			}
+			#amountDivide{
+				bottom		: 108px;
+				left		: 400px;
+				width		: 74%;
+				height		: 50px;
+				position	: absolute;
+				z-index		: 2;
+				font-size	: 150%;
+				color		: #BDBDBD;
+				background	: rgba(128,128,128,0.3);
+				padding		: 5px;
+				padding-top	: 5px;
+				padding-bottom	: 5px;
+				border-radius	: 10px;
+				border-color	: black;
+				border-style	: solid;
+				border-width	: 2px;		
+				text-align	: right;
+			}
+			
+			
+			/*standard buttons*/
+			/*vertical alignment of the image within a div*/
+			.helper {
+				display: inline-block;
+				height: 100%;
+				vertical-align: middle;
+			}			
+			
+			/*dialog*/
+			.dlg-no-title .ui-dialog-titlebar {/*(.dlg-no-title dialog class; .ui-dialog-titlebar not used)*/
+				display: none;
+			}
+			.ui-widget-content.ui-dialog {
+				background: rgba(128,128,128,0.0) !important;
+				border: 2px solid rgba(128,128,128,0.0);
+				/*place the dialog on the top of all buttons*/
+				position	: relative;
+				z-index		: 10;				
+ 			} 
+			#dialogHelp {
+				position	: relative;
+				z-index		: 3;
+				font-size	: 150%;
+				color		: #BDBDBD;
+				background	: rgba(128,128,128,0.6);
+			}
+			
+			/* images as slider handles */
+			#slider .ui-slider-handle{
+				width		: 50px;
+				height		: 50px;
+				background	: url(Images/Icons/icon_blue_slider.svg) no-repeat !important;
+				background-size	: 50px 50px !important; 
+				border		: none;
+				outline		: none;/* no border on focus*/
+				margin-top	: -14px;
+				margin-left	: -25px;
+			}	
+			/* slider handle size */
+/*			.ui-slider .ui-slider-handle { 
+				width: 50px !important; 
+				height: 50px !important;
+				margin-top: -15px;
+			}	*/
+		</style>
+
+		<link  href="scripts/jquery-ui.css" rel="stylesheet">
+		<script src="scripts/jquery-1.9.1.js"></script>
+		<script src="scripts/jquery-ui.js"></script>	
+	</head>
+	<body>
+		<script src="scripts/three71.min.js"></script>
+		<script src="scripts/TrackballControls.js"></script>
+		
+		
+		<input type="text" id="amount" readonly ></input>
+		<div id="slider"></div>
+		
+		<div id="radioMouse">
+		<input type="radio" id="radio1m" name="radioMouseOptions" ><label for="radio1m">Divide On</label>		
+		<input type="radio" id="radio2m" name="radioMouseOptions" checked="checked"><label for="radio2m">Divide Off</label>		
+		</div>
+		
+		<div id="radioImage">
+		<input type="radio" id="radio1i" name="radioImageOptions"><label for="radio1i">Pair 1</label>		
+		<input type="radio" id="radio2i" name="radioImageOptions" checked="checked"><label for="radio2i">Pair 2</label>		
+		</div>
+		
+		<div id="container"></div>
+		
+		
+		<script>//functions
+			function getWindowDimensions(){
+				{//Width, Height
+				var w = window,
+					d = document,
+					e = d.documentElement,
+					g = d.getElementsByTagName('body')[0],
+					x = w.innerWidth || e.clientWidth || g.clientWidth,
+					y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+				}	
+				
+				return {
+					width:  x,
+					height: y
+				}
+			}
+		
+			function InitThreeRenderer(Width, Height, divElement) {
+				renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+				renderer.setSize( Width, Height);
+				divElement.appendChild( renderer.domElement );
+
+				return{
+						renderer: renderer 
+				}
+			}
+			function InitCameras(){//also controls
+				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 15000 );
+				camera.position.z = CAMERA_POSITION_Z;//520;//445;
+				
+				controls = new THREE.TrackballControls( camera, renderer.domElement );//gets stuck with dat.gui, fix with renderer.domElement
+				controls.noZoom = true;
+				controls.noPan = true;
+				controls.noRotate = true;
+				
+// 				var cameraHelper = new THREE.CameraHelper(views[1].camera);
+// 				scene.add(cameraHelper);	
+			}	
+			function InitThreeScene() {
+				scene1 = new THREE.Scene();
+			}
+			function InitThreeLights(){
+				var light0 = new THREE.AmbientLight( 0x545454 ); //soft white light
+				var light1 = new THREE.DirectionalLight( 0x888888, 2 );
+				light1.position.set( 1, 1, 1  ).normalize();
+				scene1.add(light0);
+				scene1.add(light1);
+			}
+			
+			function InitSphere(){
+				var material = new THREE.MeshPhongMaterial( {wireframe:false,  color: 0xaaaaaa } );
+				var geometry = new THREE.SphereGeometry( 30,16,16 );
+				mesh = new THREE.Mesh( geometry, material );
+				scene1.add( mesh );	
+			}
+			function InitShaderMaterial(){//image blend/divide shader
+				quadmaterial = new THREE.ShaderMaterial({
+					uniforms: {
+						tDiffuse1: {
+							type: "t",
+							value: TextureLeft//Texture1
+						},
+						tDiffuse2: {
+							type: "t",
+							value: TextureRight//Texture2
+						},
+						mixRatio: {
+							type: "f",
+							value: transition
+						}, 
+						mouseX: {
+							type: "f",
+							value: 0
+						}
+// 						resolutionX: {
+// 							type: "f",
+// 							value: 0
+// 						}
+					},
+					vertexShader: [
+						"varying vec2 vUv;",
+
+						"void main() {",
+							"vUv = vec2( uv.x, uv.y );",
+							"gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
+						"}"
+					].join("\n"),
+					
+					fragmentShader: [
+// 						"uniform float resolutionX;",
+						"uniform float mouseX;",
+						"uniform float mixRatio;",
+						"uniform sampler2D tDiffuse1;",
+						"uniform sampler2D tDiffuse2;",
+						"varying vec2 vUv;",
+
+						"void main() {",
+							"vec4 texel1 = texture2D( tDiffuse1, vUv );",
+							"vec4 texel2 = texture2D( tDiffuse2, vUv );",
+							"gl_FragColor = mix( texel2, texel1, mixRatio );",
+							
+							//Mouse X Divide Blend
+// 							"float xvalue = mouseX / resolutionX;",
+// 							"if(vUv.x > xvalue) {",	
+							"if(vUv.x > mouseX) {",
+							"gl_FragColor = vec4(texel1);",
+							"};",
+						"}"
+					].join("\n")
+				});//quad material				
+			}
+			function InitPlane(){
+				var quadgeometry = new THREE.PlaneBufferGeometry(quad_width, quad_height);//window.innerWidth, window.innerHeight
+				quad = new THREE.Mesh(quadgeometry, quadmaterial);
+				quad.position.z = PLANE_POSITION_Z; //-550;
+				quad.position.y = PLANE_POSITION_Y;//70;//20;
+				quad.position.x = PLANE_POSITION_X;
+				scene1.add(quad);
+			}
+			function InitShaderUniforms(){
+				quadmaterial.uniforms.mouseX.value = mouse.x;
+			}
+			function InitObjects(){
+				//InitSphere();
+				InitPlane();
+			}
+			
+			//listeners
+			function onWindowResize() {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			}
+			function onDocumentMouseMove( event ) {// not used
+				mouse.x = ( event.clientX / (window.innerWidth));
+				mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+				
+				if(mouseBlend == true){
+					quadmaterial.uniforms.mouseX.value = mouse.x;
+	// 				quadmaterial.uniforms.mouseY.value = mouse.y;
+				}
+				else{
+					quadmaterial.uniforms.mouseX.value = window.innerWidth;//has to be max because the left side is blending over
+				}
+			}
+			function touchHandler(event){//mapping touch events to mouse events
+				var touches = event.changedTouches, first = touches[0], type = "";
+			
+				switch(event.type){
+					case "touchstart": type = "mousedown"; break;
+					case "touchmove":  type="mousemove"; break;
+					case "touchend":   type="mouseup"; break;
+					default: return;
+				}
+				var simulatedEvent = document.createEvent("MouseEvent");
+				simulatedEvent.initMouseEvent(type, true, true, window, 1,
+										first.screenX, first.screenY,
+										first.clientX, first.clientY, false,
+										false, false, false, 0/*left*/, null);
+				first.target.dispatchEvent(simulatedEvent);
+// 				event.preventDefault();
+			}						
+			function AddListeners(){
+				window.addEventListener( 'resize', onWindowResize, false );
+// 				window.addEventListener( 'mousemove', onDocumentMouseMove, false );
+
+				//mapping touch to mouse
+				window.addEventListener("touchstart", touchHandler, true);
+				window.addEventListener("touchmove", touchHandler, true);
+				window.addEventListener("touchend", touchHandler, true);
+				window.addEventListener("touchcancel", touchHandler, true);				
+			}
+			
+			function animate() {
+				controls.update();
+				requestAnimationFrame( animate );
+				
+				//auto blend
+				t = (1 + Math.sin(transition_speed*clock.getElapsedTime() / Math.PI)) / 2;
+				transition = THREE.Math.smoothstep(t, 0.3, 0.7);
+
+				if(autoOn == true){
+					quadmaterial.uniforms.mixRatio.value = transition;
+
+					//update jquery slider
+					$('#slider').slider('value', transition );
+					s.blend = transition;//same value as slider, otherwise I get an offset (a jump) in the slider	
+				}
+				
+				quadmaterial.uniforms.mouseX.value = window.innerWidth;//has to be max because the left side is blending over
+				
+				if(mouseBlend == true){
+					transition = 0.0;
+					quadmaterial.uniforms.mixRatio.value = transition;
+					
+					$('#slider').slider('value',  s.divide );
+					s.blend =  s.divide;//same value as slider, otherwise I get an offset (a jump) in the slider		
+
+					quadmaterial.uniforms.mouseX.value = s.divide;
+				}
+				
+				renderer.render( scene1, camera );
+			}
+		</script>
+		
+		<script>//main
+				{//parameters
+					var x;
+					var customWidth = getWindowDimensions().width;
+					var customHeight = getWindowDimensions().height;
+					console.log(customWidth, customHeight);
+					
+					var camera, scene1, renderer;
+					var mesh, quad;
+					var clock = new THREE.Clock();
+					var quadmaterial;
+					var transition_speed = 2;//5;
+					var t, transition = 0.5;
+					var slider_blend_init = 0.5;
+					var slider_divide_init = 0.5;
+					var mouse = new THREE.Vector3( 0, 0, 1 );//needs to initiate
+					var touch = new THREE.Vector3( 0, 0, 1 );//needs to initiate
+					
+					var autoOn = true;
+					var mouseBlend = false;
+				}
+				{//photo plane position parameters
+					var CAMERA_POSITION_Z = 480;
+					var PLANE_POSITION_X = -74;
+					var PLANE_POSITION_Y = 40;
+					var PLANE_POSITION_Z = -550;
+				}
+				{//textures
+					var quad_width = 2000; 
+					var quad_height = 1455;
+					
+					//non-rotated pair
+					var Texture1 = new THREE.ImageUtils.loadTexture( 'Images/sky_germany.png' );//together_rotated_cropped_1_2k.png
+					var Texture2 = new THREE.ImageUtils.loadTexture( 'Images/sky_chile.png' );//DSC5386_cropped_large_canvasLeftB_2k.png
+					//rotated pair
+					var Texture3 = Texture1;
+					var Texture4 = new THREE.ImageUtils.loadTexture( 'Images/sky_chile_rotated.png' );//together_rotated_cropped_2c_2k.png
+					
+					Texture1.minFilter = Texture1.magFilter = THREE.LinearFilter;
+					Texture2.minFilter = Texture2.magFilter = THREE.LinearFilter;
+					Texture3.minFilter = Texture3.magFilter = THREE.LinearFilter;
+					Texture4.minFilter = Texture4.magFilter = THREE.LinearFilter;	
+					
+					//start with the rotated pair (adjust the checked radio button)
+					var TextureLeft = Texture3;
+					var TextureRight = Texture4;
+					
+					//menu
+					var image_divide 		= 'Images/Icons/icon_divide.png';
+					var image_blend 		= 'Images/Icons/icon_blend.png';
+					var image_align 		= 'Images/Icons/icon_aligned.png';
+					var image_misalign 		= 'Images/Icons/icon_misaligned.png';
+				}
+				
+				window.onload = function () { 
+					x = InitThreeRenderer(customWidth, customHeight, container);
+					x = InitCameras();
+					x = InitThreeScene();
+					x = InitThreeLights();
+					
+					InitShaderMaterial();
+					InitShaderUniforms();
+					x = InitObjects();
+					
+					AddListeners();
+					
+					animate();
+				}// window.onload
+		</script>
+		
+		<script>//jquery
+			var s = $.elements = {};
+			s.blend = slider_blend_init;
+			s.divide = slider_divide_init;
+				
+			$(document).ready(function(){
+				console.log("ready");
+				document.body.style.visibility = "visible";
+			
+				{//slider (Blending)
+				$( "#slider" )
+				.text("") // sets text to empty
+				.slider({
+					range: "min",
+					min: 0,
+					max: 1,
+					step: 0.01,
+					slide: function( event, ui ) {
+						s.blend = ui.value;
+						s.divide = s.blend;
+						
+						transition = s.blend;
+						quadmaterial.uniforms.mixRatio.value = transition;
+
+						autoOn = false;
+					},
+					value: s.blend
+				})
+				}
+				
+				{//radio buttons (Mouse Divide) 
+				$( "#radioMouse" ).buttonset();
+				$('#radioMouse input').on('change', function() {
+					var radioID = $('input[name="radioMouseOptions"]:checked')[0].id;
+					
+					if(radioID == "radio1m") {
+						mouseBlend = true;
+						
+						//set blend slider to 0.5
+						$('#slider').slider('value', 0.5 );
+						s.divide = 0.5;//same value as slider, otherwise I get an offset (a jump) in the slider
+					}
+					if(radioID == "radio2m") {
+						mouseBlend = false;
+						autoOn = true;
+					}
+				});
+				}
+				
+				{//radio buttons (Change Image Pair) 
+				$( "#radioImage" ).buttonset();
+				$('#radioImage input').on('change', function() {
+					var radioID = $('input[name="radioImageOptions"]:checked')[0].id;
+					
+					if(radioID == "radio1i") {
+// 						scene1.remove(quad);
+// 						quadmaterial.uniforms.tDiffuse1.value.dispose();
+// 						quadmaterial.uniforms.tDiffuse2.value.dispose();
+						quadmaterial.uniforms.tDiffuse1.value = Texture1;
+						quadmaterial.uniforms.tDiffuse2.value = Texture2;
+						if(quad.material.map) quad.material.map.dispose();
+						quad.material.map = quadmaterial;
+						quad.material.needsUpdate = true;
+// 						scene1.add(quad);
+					}
+					if(radioID == "radio2i") {
+// 						scene1.remove(quad);
+// 						quadmaterial.uniforms.tDiffuse1.value.dispose();
+// 						quadmaterial.uniforms.tDiffuse2.value.dispose();
+						quadmaterial.uniforms.tDiffuse1.value = Texture3;
+						quadmaterial.uniforms.tDiffuse2.value = Texture4;
+						if(quad.material.map) quad.material.map.dispose();
+						quad.material.map = quadmaterial;
+						quad.material.needsUpdate = true;
+// 						scene1.add(quad);
+					}
+				});
+				}
+			});
+		</script>
+
+		<script>//radio button images
+			$('div[id="radioMouse"] label[for="radio1m"]').html('<img src=\"'+image_divide+'\" width="80px" height="80px"></img>');
+			$('div[id="radioMouse"] label[for="radio2m"]').html('<img src=\"'+image_blend+'\" width="80px" height="80px"></img>');
+			$('div[id="radioImage"] label[for="radio1i"]').html('<img src=\"'+image_align+'\" width="80px" height="80px"></img>');
+			$('div[id="radioImage"] label[for="radio2i"]').html('<img src=\"'+image_misalign+'\" width="80px" height="80px"></img>');
+		</script>			
+		
+		<div id="resetButton"></div>
+		<div id="languageButton"></div>
+		<div id="dialogHelp" title="Dialog" align="center" ></div>	
+		<div id="infoButton"></div>			
+		<script>//standard buttons (don't forget:
+			//* the images (4x icons, 2x help/info screens), 
+			//* css elements (.helper, #dialogHelp), 
+			//* adjust with the other URL parameters (in #languageButton),
+			//* need customHeight, customWidth (customWidth = getWindowDimensions().width;) ; (also uses controls - can be commented out if not there)
+			//)
+			
+			function getUrlVars() {
+				var vars = {};
+				var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,    
+					function(m,key,value) {
+						vars[key] = value;
+					}
+				);
+				return vars;
+			}	
+			function AddDialog(elementName, content){//needs .helper class
+				$(elementName).empty();
+				
+				//vertical alignment of the image within a div
+				var content2 = "<span class='helper'></span>";
+				$(content2).appendTo(elementName);
+				
+				$(content).appendTo(elementName);
+				$(elementName).dialog("open");
+			}
+			
+			{///parameters (using customHeight, customWidth)
+			//button positioning
+			var standard1_left = 2;
+			var standard2_left = 102;//1554;
+			var standard3_left = 202;
+			var standard_bottom = 12;
+			
+			//dialog parameters
+			var dialog_height = customHeight;
+			var dialog_width = customWidth-4;
+			var dialog_left = 0;
+			var dialog_up = 0;			
+			}
+			{//load images
+			var button_reset = "Images/Icons/icon_blue_reload.png";
+			var button_info = "Images/Icons/icon_blue_help.png";
+			var button_language = "Images/Icons/icon_blue_DE.svg";	
+			var lang = "en";			
+			
+			//language button image //change icon image (offer opposite image)
+			if(getUrlVars()["lang"] == "en") button_language = "Images/Icons/icon_blue_DE.svg";
+			if(getUrlVars()["lang"] == "de") button_language = "Images/Icons/icon_blue_EN.svg";
+			
+			//help screen images
+			var info_imageEN ='Images/0612_light_pollution_help_screens_ES_interactives_ENc.png';
+			var info_imageDE ='Images/0612_light_pollution_help_screens_ES_interactives_DEc.png';			
+			var info_image_width = 1500;
+			}	
+
+			$(function() 
+			{
+				{//reset button
+				$("#resetButton")
+				.text("") // sets text to empty
+				.css(
+					{ "z-index":"2",
+					"background":"rgba(0,0,0,0)", "opacity":"0.9", 
+					"position":"absolute", "bottom":standard_bottom+"px", "left":standard1_left+"px", 
+					"border": "none"
+					}) // adds CSS
+				.append("<img width='80' height='80' src="+button_reset+" />")
+				.button()
+				.click( 
+					function(){ 
+						window.location.reload(true);
+					});
+				}
+				
+				{//language change button (adjust to other URL parameters!)
+				$("#languageButton")
+				.text("") // sets text to empty
+				.css(
+					{ "z-index":"2",
+					"background":"rgba(0,0,0,0)", "opacity":"0.9", 
+					"position":"absolute", "bottom":standard_bottom+"px", "left":standard2_left+"px", 
+					"border": "none"
+					}) // adds CSS
+				.append("<img width='80' height='80' src="+button_language+" />")
+				.button()
+				.click( 
+					function(){ 
+						//reload with different url parameter (change language)
+						if(getUrlVars()["lang"] == "en") lang="de";
+						if(getUrlVars()["lang"] == "de") lang="en";
+						if(!getUrlVars()["lang"]) lang="de";//had default values (en as default)
+						
+						window.location.href = window.location.pathname+"?lang="+lang;
+					});
+				}
+				
+				{//info/help dialog - needs CSS setup and dialog parameters
+				$("#dialogHelp").dialog({
+					autoOpen: false,
+					modal: false,
+					dialogClass: "dlg-no-title",
+					resizable: false,
+					height: dialog_height,
+					width: dialog_width,
+ 					position: [dialog_left,dialog_up],//left, top
+					clickOutside: true, // clicking outside the dialog will close it
+					clickOutsideTrigger: "#infoButton"  // Element (id or class) that triggers the dialog opening 
+				})
+				.mouseenter(function(){
+					controls.noRotate = true;
+				})
+				.mouseleave(function(){
+					controls.noRotate = true;
+				})
+				.click( 
+					function() { 
+						$("#dialogHelp").dialog("close");//close dialog
+					});	
+				}
+				
+				{//info/help button - needs #dialogHelp and AddDialog() function
+				$("#infoButton")
+				.text("") // sets text to empty
+				.css(
+					{ "z-index":"2",
+					"background":"rgba(0,0,0,0)", "opacity":"0.9", 
+					"position":"absolute", "bottom":standard_bottom+"px", "left":standard3_left+"px", 
+					"border": "none"
+					}) // adds CSS
+				.append("<img width='80' height='80' src="+button_info+" />")
+				.button()
+				.click( 
+					function(){ 
+						if(getUrlVars()["lang"] == "en") AddDialog("#dialogHelp", "<img src="+info_imageEN+" width="+info_image_width+" style='vertical-align:middle;'></img>");
+						if(getUrlVars()["lang"] == "de") AddDialog("#dialogHelp", "<img src="+info_imageDE+" width="+info_image_width+" style='vertical-align:middle;'></img>");
+						if(!getUrlVars()["lang"]) AddDialog("#dialogHelp", "<img src="+info_imageEN+" width="+info_image_width+" style='vertical-align:middle;'></img>");//had default values (en as default)
+					});
+				}
+			});
+		</script>		
+	</body>
+</html>
